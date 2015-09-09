@@ -3,6 +3,8 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+    velocity.set(1,1);
+    velocity *= 3;
 }
 
 //--------------------------------------------------------------
@@ -13,15 +15,34 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    ofVec2f velocity;
-    velocity.set(1,1);
     ofBackground(255);
     ofSetColor(0);
     location = location + velocity;
     ofCircle(location.x, location.y, 20);
+    checkEdges();
+}
+
+void ofApp::checkEdges(){
+    if (location.y > ofGetWindowHeight() || location.y < 0 ){
+        velocity *= ofVec2f(1,-1);
+    }
+    
+    else if(location.x > ofGetWindowWidth() || location.x < 0) {
+        velocity *= ofVec2f(-1,1);
+    }
     
 
+
 }
+
+
+
+
+
+
+
+
+
 
 
 

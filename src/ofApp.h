@@ -8,6 +8,7 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+    
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -20,5 +21,19 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
     ofVec2f location;
+    ofVec2f velocity;
+    void checkEdges();
 		
 };
+
+
+
+
+
+
+
+
+
+
+
+
