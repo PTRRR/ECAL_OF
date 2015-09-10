@@ -3,41 +3,77 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
-    int nmbrparticle = 40;
+    int nmbrparticle = 10000;
     for (int i = 0; i < nmbrparticle; i++) {
         
         Particle p = Particle();
         p.setup();
         particles.push_back(p);
-//        particles[i].setup();
-        
     }
+    
+    repulsionPoint.set(ofGetWindowWidth()/2, ofGetWindowHeight()/2);
+    
+    for (int i = 0; i < 5; i++) {
+        ofVec2f pointTemp = ofVec2f(ofRandom(ofGetWindowWidth()), ofRandom(ofGetWindowHeight()));
+        attractionPoints.push_back(pointTemp);
+    }
+    
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    ofVec2f gravity = ofVec2f (0, 2);
+    mouseAttractionPoint.set(ofGetMouseX(), ofGetMouseY());
+    
+    ofVec2f gravity = ofVec2f (0, 0);
     noiseCounter += 0.01;
-    ofVec2f wind = ofVec2f ((ofNoise(noiseCounter)-0.5) * 1000, 0);
+    ofVec2f wind = ofVec2f ((ofNoise(noiseCounter)-0.5) * 10, 0);
     
     for (int i = 0;i < particles.size() ; i++ ) {
-        particles[i].update();
-        particles[i].applyForce(gravity);
+        Particle &pTemp = particles[i];
+        
+        pTemp.update();
+        pTemp.applyForce(gravity);
         ofVec2f friction = ofVec2f (particles[i].acceleration);
-        particles[i].applyForce(friction.normalize() * 2);
-        particles[i].applyForce(wind);
+        pTemp.applyForce(friction.normalize() * 2);
+        pTemp.applyForce(wind);
+        
+        for (int i = 0; i < attractionPoints.size(); i++) {
+            ofVec2f pointForce = attractionPoints[i] - pTemp.location;
+            
+            ofVec2f forceApplied = pointForce.normalize()*1;
+            float dist = pointForce.length();
+            
+            pTemp.applyForce(forceApplied / dist);
+        }
+        
+        ofVec2f pointForce = mouseAttractionPoint - pTemp.location;
+        pTemp.applyForce(pointForce.normalize()*30);
+        
+        ofVec2f repulsionForce = pTemp.location - repulsionPoint;
+        pTemp.applyForce(repulsionForce.normalize() * 30);
+        
     }
 }
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    ofBackground(255);
+    ofBackground(0);
+    
+//    for (int i = 0; i < attractionPoints.size(); i++) {
+//        ofSetColor(255, 0, 0);
+//        ofCircle(attractionPoints[i], 10);
+//    }
     ofSetColor(0);
+    
     for (int i = 0; i < particles.size(); i++) {
         particles[i].draw();
         checkEdges(particles[i]);
     }
+    
+    ofSetColor(0, 0, 255);
+    ofCircle(mouseAttractionPoint.x, mouseAttractionPoint.y, 2);
 }
 
 void ofApp::checkEdges(Particle &p){

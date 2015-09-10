@@ -21,17 +21,17 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-    Particle particle1;
+//    Particle particle1;
     void checkEdges(Particle &p);
     vector<Particle> particles;
     
     float noiseCounter = 0;
     
-  
+    ofVec2f mouseAttractionPoint;
     
+    ofVec2f repulsionPoint;
     
-    
-    
+    vector<ofVec2f> attractionPoints;
 };
 
 
