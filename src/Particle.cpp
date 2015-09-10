@@ -14,17 +14,51 @@ void Particle::setup(){
     float y= ofRandom(ofGetWindowHeight());
     location.set(x, y);
     velocity.set(ofRandom(5),ofRandom(5));
+    maxSpeed = 10;
     
-    
+    acceleration.set(0, 0);
+    mass = ofRandom(30, 70);
+    rayon = mass * 0.1;
 }
 void Particle::update(){
+    if (velocity.length() < maxSpeed) {
+        velocity += acceleration;
+    }
     
+    location = location + velocity;
+    acceleration *= 0;
 }
 
 void Particle::draw(){
     
     ofSetColor(0);
-    location = location + velocity;
-    ofCircle(location.x, location.y, 2);
+    ofCircle(location.x, location.y, rayon);
     
 }
+
+void Particle::applyForce(ofVec2f force){
+    acceleration = force/mass;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -25,6 +25,8 @@ class ofApp : public ofBaseApp{
     void checkEdges(Particle &p);
     vector<Particle> particles;
     
+    float noiseCounter = 0;
+    
   
     
     

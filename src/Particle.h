@@ -18,11 +18,32 @@ public:
     void setup();
     void update();
     void draw();
+    
+    void applyForce(ofVec2f force);
 
     ofVec2f location;
     ofVec2f velocity;
+    float maxSpeed;
+    
+    ofVec2f acceleration;
+    
+    float mass;
+    float rayon;
     
 };
 
 #endif /* defined(__ecal_particles_system__Particle__) */
+
+
+
+
+
+
+
+
+
+
+
+
+
 
